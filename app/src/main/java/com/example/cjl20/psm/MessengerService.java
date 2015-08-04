@@ -40,17 +40,16 @@ public class MessengerService extends Service {
 
             float lux = event.values[0];
 
-            System.out.println("acc ----> " + acc+"  lux ----> " + lux);
+            System.out.println("acc ----> " + acc + "  lux ----> " + lux);
 
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
-            if (lux == 0) {
+            if (lux < 1) {
                 System.out.println(11111111);
+
                 PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "My Tag");
                 wl.acquire();
             }
-
-
         }
 
         @Override
