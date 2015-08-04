@@ -7,22 +7,32 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
+import android.widget.Switch;
 
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
+
+    private Switch power;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Button stop = (Button) findViewById(R.id.stop);
+        power = (Switch)findViewById(R.id.switchPower);
         stop.setOnClickListener(stopclick);
+
+
+        if (isServiceRun(MainActivity.this)) power.setChecked(true);
+        power.setChecked(false);
 
         if (!isServiceRun(MainActivity.this)){
             Intent s = new Intent(MainActivity.this, MessengerService.class);
             MainActivity.this.startService(s);
             System.out.println("服务线程手动开始");
+            power.setChecked(true);
         }
     }
 
@@ -45,13 +55,20 @@ public class MainActivity extends AppCompatActivity {
         List<ActivityManager.RunningServiceInfo> list = am.getRunningServices(60);
 
         for (ActivityManager.RunningServiceInfo info : list) {
-            System.out.println(info.service.getClassName());
             if (info.service.getClassName().equals(
                     "com.example.cjl20.psm.MessengerService")) {
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        System.out.println("aaaaaaaaaaaaa");
+        Intent s = new Intent(MainActivity.this, MessengerService.class);
+        MainActivity.this.startService(s);
     }
 }
 

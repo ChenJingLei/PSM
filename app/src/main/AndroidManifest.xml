@@ -5,6 +5,7 @@
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
+        android:persistent="true"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
         <activity
@@ -20,16 +21,16 @@
         <service
             android:name=".MessengerService"
             android:enabled="true"
-            android:persistent="true"
             android:process=":PSMService">
-            <intent-filter android:priority="10000">
+            <intent-filter android:priority = "1000">
                 <action android:name="com.MessengerService.service" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </service>
 
 
         <receiver android:name=".MessengerReceiver">
-            <intent-filter>
+            <intent-filter android:priority = "1000">
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <category android:name="android.intent.category.HOME" />
 
@@ -39,6 +40,7 @@
     </application>
 
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.RAISED_THREAD_PRIORITY"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
 </manifest>

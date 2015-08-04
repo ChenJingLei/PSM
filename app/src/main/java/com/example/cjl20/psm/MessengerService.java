@@ -9,18 +9,14 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.os.Handler;
 import android.os.IBinder;
-import android.os.Message;
-import android.os.Messenger;
 import android.os.PowerManager;
-import android.os.RemoteException;
 import android.widget.Toast;
 
-import java.util.ArrayList;
 
 /**
  * Created by cjl20 on 2015/8/4.
+ * PROJECT_NAME by PSM
  */
 public class MessengerService extends Service {
 
@@ -35,9 +31,11 @@ public class MessengerService extends Service {
         ligthSensor = sm.getDefaultSensor(Sensor.TYPE_LIGHT);
 
         sm.registerListener(new SensorListener(), ligthSensor, SensorManager.SENSOR_DELAY_NORMAL);
+
+        startForeground(0, null);
     }
 
-    public class SensorListener implements SensorEventListener{
+    public class SensorListener implements SensorEventListener {
 
         @Override
         public void onSensorChanged(SensorEvent event) {
@@ -45,22 +43,17 @@ public class MessengerService extends Service {
 
             float lux = event.values[0];
 
-            StringBuffer sb = new StringBuffer();
+            System.out.println("acc ----> " + acc+"  lux ----> " + lux);
 
-            sb.append("acc ----> " + acc);
-            sb.append("\n");
-            sb.append("lux ----> " + lux);
-            sb.append("\n");
+            PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
-            if (lux == 0){
+            if (lux == 0) {
                 System.out.println(11111111);
-                PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
                 PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "My Tag");
                 wl.acquire();
-//                wl.release();
             }
 
-            System.out.println(sb.toString());
+
         }
 
         @Override
@@ -72,6 +65,7 @@ public class MessengerService extends Service {
     @Override
     public void onDestroy() {
 
+        System.out.println("ddddddddddddddddddddddddddddddddddddddddddd");
         Intent localIntent = new Intent();
         localIntent.setClass(this, MessengerService.class); //销毁时重新启动Service
         this.startService(localIntent);
@@ -93,7 +87,8 @@ public class MessengerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        return super.onStartCommand(intent, START_STICKY, startId);
+//        return super.onStartCommand(intent, Service.START_REDELIVER_INTENT, startId);
+        return Service.START_REDELIVER_INTENT;
     }
 
 
