@@ -13,7 +13,6 @@ import android.os.IBinder;
 import android.os.PowerManager;
 import android.widget.Toast;
 
-
 /**
  * Created by cjl20 on 2015/8/4.
  * PROJECT_NAME by PSM
