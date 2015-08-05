@@ -44,10 +44,11 @@ public class MessengerService extends Service {
 
             PowerManager pm = (PowerManager) getSystemService(Context.POWER_SERVICE);
 
-            if (lux < 1) {
+            if (lux <= 4.3) {
                 System.out.println(11111111);
 
                 PowerManager.WakeLock wl = pm.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "My Tag");
+
                 wl.acquire();
             }
         }
